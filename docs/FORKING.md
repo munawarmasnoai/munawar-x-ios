@@ -5,7 +5,7 @@
 To create a fork, the first step is to update some of the project's configuration options such as the bundle identifier and the app's display name. To do this, open the `app.yml` file in the project root folder and at a minimum change these settings:
 
 ```
-APP_DISPLAY_NAME: Element X
+APP_DISPLAY_NAME: Munawar X
 APP_GROUP_IDENTIFIER: group.io.element
 BASE_BUNDLE_IDENTIFIER: io.element.elementx
 DEVELOPMENT_TEAM: 7J4U792NQT
