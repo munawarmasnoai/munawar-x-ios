@@ -1,0 +1,69 @@
+//
+// Copyright 2022-2024 New Vector Ltd.
+//
+// SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
+// Please see LICENSE files in the repository root for full details.
+//
+
+import Combine
+import SwiftUI
+
+struct JoinRoomScreenCoordinatorParameters {
+    let roomID: String
+    let via: [String]
+    let clientProxy: ClientProxyProtocol
+    let mediaProvider: MediaProviderProtocol
+    let userIndicatorController: UserIndicatorControllerProtocol
+    let appSettings: AppSettings
+}
+
+enum JoinRoomScreenCoordinatorAction {
+    case joined
+    case cancelled
+    case presentDeclineAndBlock(userID: String)
+}
+
+final class JoinRoomScreenCoordinator: CoordinatorProtocol {
+    private let viewModel: JoinRoomScreenViewModelProtocol
+    
+    private var cancellables = Set<AnyCancellable>()
+ 
+    private let actionsSubject: PassthroughSubject<JoinRoomScreenCoordinatorAction, Never> = .init()
+    var actionsPublisher: AnyPublisher<JoinRoomScreenCoordinatorAction, Never> {
+        actionsSubject.eraseToAnyPublisher()
+    }
+    
+    init(parameters: JoinRoomScreenCoordinatorParameters) {
+        viewModel = JoinRoomScreenViewModel(roomID: parameters.roomID,
+                                            via: parameters.via,
+                                            appSettings: parameters.appSettings,
+                                            clientProxy: parameters.clientProxy,
+                                            mediaProvider: parameters.mediaProvider,
+                                            userIndicatorController: parameters.userIndicatorController)
+    }
+    
+    func start() {
+        viewModel.actionsPublisher.sink { [weak self] action in
+            MXLog.info("Coordinator: received view model action: \(action)")
+            
+            guard let self else { return }
+            switch action {
+            case .joined:
+                actionsSubject.send(.joined)
+            case .dismiss:
+                actionsSubject.send(.cancelled)
+            case .presentDeclineAndBlock(let userID):
+                actionsSubject.send(.presentDeclineAndBlock(userID: userID))
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    func stop() {
+        viewModel.stop()
+    }
+        
+    func toPresentable() -> AnyView {
+        AnyView(JoinRoomScreen(context: viewModel.context))
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "originHash" : "f818e663a0525244e7213b08a1bf75d9223d516b797de9b2d90b511c62dedc99",
+  "pins" : [
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "011f0c765fb46d9cac61bca19be0527e99c98c8b",
+        "version" : "1.5.1"
+      }
+    },
+    {
+      "identity" : "swift-command-line-tools",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/element-hq/swift-command-line-tools.git",
+      "state" : {
+        "revision" : "e5eaab1558ef664e6cd80493f64259381670fb3a"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams",
+      "state" : {
+        "revision" : "7568d1c6c63a094405afb32264c57dc4e1435835",
+        "version" : "6.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}
